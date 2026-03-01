@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Madurai 2.0 | Public Grievance Management</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;600;800&display=swap');
+
+        :root {
+            --primary: #059669;
+            --secondary: #f3f4f6;
+            --accent: #d97706;
+            --text-main: #1f2937;
+            --text-light: #ffffff;
+            --text-muted: #6b7280;
+            --bg-card: #ffffff;
+            --border-color: #000000;
+        }
+
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--text-light);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+
+        header {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .auth-container {
+            max-width: 400px;
+            margin: 4rem auto;
+            padding: 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #f9fafb;
+            border: 1.5px solid var(--primary);
+            border-radius: 8px;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-text {
+            background: #e5e7eb;
+            border: 1.5px solid var(--primary);
+            border-right: none;
+            padding: 0.8rem 0.75rem;
+            border-radius: 8px 0 0 8px;
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .input-group input {
+            border-radius: 0 8px 8px 0;
+            flex: 1;
+        }
+
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .dashboard {
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1.5px solid #000;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .category-item {
+            padding: 1.5rem;
+            background: #dcfce7;
+            /* Slightly darker green */
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid #059669;
+            transition: all 0.3s;
+        }
+
+        .category-item:hover {
+            background: #bbf7d0;
+            /* Even greener on hover */
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: fadeIn 0.5s forwards;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--bg-card);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.8rem 0;
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-item {
+            text-align: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            text-decoration: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 1.5rem;
+            display: block;
+        }
+
+        .nav-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+            padding-bottom: 80px;
+            /* Space for bottom nav */
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Hide bottom nav on officer dash or login */
+        #bottom-nav-container {
+            display: none;
+        }
+
+        /* Image Zoom Modal */
+        .zoom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .zoom-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .zoom-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Star Rating Styles */
+        .star-rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            font-size: 2.5rem;
+            color: #ddd;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin-bottom: 0;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover~label,
+        .star-rating input:checked~label {
+            color: #f1c40f;
+        }
+
+        .rating-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 6000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .rating-modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        /* Complaint Form Specific Theme */
+        .complaint-form-card {
+            background: #f0fdf4 !important;
+            /* Very light green */
+            border: 2px solid #059669 !important;
+        }
+
+        .complaint-form-card input,
+        .complaint-form-card textarea,
+        .complaint-form-card select {
+            background: #dcfce7 !important;
+            /* Slightly darker green */
+            border: 1.5px solid #059669 !important;
+            color: #166534 !important;
+            /* Dark green text */
+        }
+
+        .complaint-form-card label {
+            color: #166534 !important;
+            font-weight: 700 !important;
+        }
+
+        #photo-placeholder.complaint-form-theme {
+            background: #dcfce7 !important;
+            border: 2px dashed #059669 !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo"><img src="logo.png" alt="Logo" style="height: 32px; border-radius: 6px;"> Clean<span>Madurai
+                2.0</span></div>
+        <div id="user-info"></div>
+    </header>
+
+    <!-- Profile Setup Screen (Shown First) -->
+    <div class="auth-container animate" id="profile-setup-screen" style="max-width: 500px;">
+        <div style="text-align: center; margin-bottom: 1.5rem;"><img src="logo.png" alt="Logo"
+                style="height: 64px; border-radius: 12px; margin-bottom: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h2>Complete Your Profile</h2>
+        </div>
+
+        <div class="form-group"
+            style="margin-bottom: 2rem; background: var(--bg-card); padding: 1rem; border-radius: 10px; border: 1px solid var(--primary);">
+            <label style="color: var(--primary); font-weight: 600;">Preferred Language / விருப்பமான மொழி</label>
+            <select id="prof-language" onchange="changeLanguagePreview()">
+                <option value="en">English</option>
+                <option value="tamil">தமிழ் (Tamil)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label data-i18n="login_as">Login As</label>
+            <select id="prof-role" onchange="toggleProfileFields()">
+                <option value="citizen" data-i18n="public_user">Public User / பொது பயனர்</option>
+                <option value="officer" data-i18n="corp_officer">Corporation Officer / மாநகராட்சி அதிகாரி</option>
+            </select>
+        </div>
+
+        <div id="citizen-fields">
+            <div class="form-group">
+                <label data-i18n="full_name">Full Name</label>
+                <input type="text" id="prof-name" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label data-i18n="email_id">Email ID</label>
+                <input type="email" id="prof-email" placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label data-i18n="contact_no">Contact No</label>
+                <div class="input-group">
+                    <span class="input-group-text">+91</span>
+                    <input type="tel" id="prof-contact" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="address">Address</label>
+                <input type="text" id="prof-address" placeholder="123 Main St">
+            </div>
+            <div class="form-group">
+                <label data-i18n="pincode">Pincode</label>
+                <input type="text" id="prof-pincode" placeholder="625001">
+            </div>
+            <button class="btn btn-primary" onclick="saveProfile()" data-i18n="login_btn">Login & Continue</button>
+        </div>
+
+        <div id="officer-fields" style="display: none;">
+            <div class="form-group">
+                <label data-i18n="officer_name">Officer Name</label>
+                <input type="text" id="off-name" placeholder="Officer Name">
+            </div>
+            <div class="form-group">
+                <label data-i18n="contact_otp">Contact Number (For OTP)</label>
+                <div class="input-group">
+                    <span class="input-group-text">+91</span>
+                    <input type="tel" id="off-contact" placeholder="9876543210" maxlength="10" pattern="[0-9]{10}"
+                        oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="employee_id">Employee ID</label>
+                <input type="text" id="off-empid" placeholder="e.g., EMP-2024-001">
+            </div>
+            <div class="form-group">
+                <label>Assigned Ward</label>
+                <input type="number" id="off-ward" placeholder="e.g., Ward 42">
+            </div>
+            <button class="btn btn-primary"
+                style="background: transparent; border: 1px solid var(--primary); color: var(--primary);"
+                onclick="sendOTP()">Send OTP</button>
+            <div id="otp-section" style="display: none; margin-top: 1rem;">
+                <div class="form-group">
+                    <label>Enter OTP</label>
+                    <input type="text" id="off-otp" placeholder="1234">
+                </div>
+                <button class="btn btn-primary" onclick="verifyOTPAndLogin()">Verify & Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legacy Authentication Screen (Hidden, replaced by combined profile setup) -->
+    <div class="auth-container animate" id="auth-screen" style="display: none;">
+        <h2>Welcome Back</h2>
+        <div class="form-group">
+            <label>Login As</label>
+            <select id="user-role">
+                <option value="citizen">public user</option>
+                <option value="officer">corporation office</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Username</label>
+            <input type="text" placeholder="Enter your username">
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" onclick="login()">Login to Dashboard</button>
+    </div>
+
+    <!-- Previously this was the setup screen, now combined above -->
+
+    <!-- Profile Details Modal -->
+    <div id="profile-modal" class="animate"
+        style="display: none; position: fixed; top: 80px; right: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 15px; z-index: 200; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-width: 300px;">
+        <button onclick="toggleProfileModal()"
+            style="position: absolute; top: 15px; left: 15px; background: none; border: none; color: var(--text-main); font-size: 1.2rem; cursor: pointer; padding: 0;">←</button>
+        <div
+            style="text-align: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <img src="" id="modal-avatar"
+                style="width: 64px; height: 64px; border-radius: 50%; margin-bottom: 0.5rem; border: 2px solid var(--primary);">
+            <h3 id="modal-name">User Name</h3>
+            <span style="color: var(--primary); font-size: 0.85rem; font-weight: 600;" id="modal-role">Role</span>
+        </div>
+        <div style="font-size: 0.9rem; color: var(--text-main); line-height: 1.8;">
+            <div
+                style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                <strong data-i18n="email_id">Email:</strong>
+                <span id="modal-email" style="color: var(--text-muted);"></span>
+            </div>
+            <div
+                style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                <strong data-i18n="contact_no">Contact:</strong>
+                <span id="modal-contact" style="color: var(--text-muted);"></span>
+            </div>
+            <div
+                style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                <strong data-i18n="address">Address:</strong>
+                <span id="modal-address" style="color: var(--text-muted);"></span>
+            </div>
+            <div
+                style="display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e5e7eb;">
+                <strong data-i18n="pincode">Pincode:</strong>
+                <span id="modal-pincode" style="color: var(--text-muted);"></span>
+            </div>
+        </div>
+        <button class="btn btn-primary" style="padding: 0.8rem; margin-top: 1.5rem;" onclick="logout()"
+            data-i18n="logout_btn">Logout</button>
+    </div>
+
+    <!-- Bottom Navigation Bar (Citizen) -->
+    <div id="bottom-nav-container">
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchTab('tab-home', this)">
+                <i>🏠</i>
+                <span class="nav-text" data-i18n="nav_home">Home</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-issues', this)">
+                <i>📝</i>
+                <span class="nav-text" data-i18n="nav_issues">My Issues</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-board', this)">
+                <i>🏆</i>
+                <span class="nav-text" data-i18n="nav_board">Leaderboard</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('tab-profile', this)">
+                <i>👤</i>
+                <span class="nav-text" data-i18n="nav_profile">Profile</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Citizen Dashboard Container -->
+    <div class="dashboard animate" id="citizen-dashboard" style="padding: 1rem; padding-bottom: 80px;">
+
+        <!-- Tab 1: Home (Raise Complaint) -->
+        <div id="tab-home" class="tab-content active">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
+                <h2 data-i18n="raise_comp" style="margin-bottom:0;">Raise a Complaint</h2>
+            </div>
+            <div class="card">
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;" data-i18n="select_cat">Select a category to
+                    report a new issue in your area.</p>
+                <div class="category-grid">
+                    <div class="category-item" onclick="openComplaintForm('Garbage')"><span
+                            style="font-size: 2rem;">🗑️</span><br><span data-i18n="cat_garbage"
+                            style="font-weight: 600; margin-top: 0.5rem; display: block;">Garbage</span></div>
+                    <div class="category-item" onclick="openComplaintForm('Drainage')"><span
+                            style="font-size: 2rem;">💧</span><br><span data-i18n="cat_drainage"
+                            style="font-weight: 600; margin-top: 0.5rem; display: block;">Drainage</span></div>
+                    <div class="category-item" onclick="openComplaintForm('Sanitation')"><span
+                            style="font-size: 2rem;">🧼</span><br><span data-i18n="cat_sanitation"
+                            style="font-weight: 600; margin-top: 0.5rem; display: block;">Sanitation</span></div>
+                    <div class="category-item" onclick="openComplaintForm('Others')"><span
+                            style="font-size: 2rem;">🏗️</span><br><span data-i18n="cat_others"
+                            style="font-weight: 600; margin-top: 0.5rem; display: block;">Others</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: My Issues -->
+        <div id="tab-issues" class="tab-content">
+            <h2 data-i18n="my_comp" style="margin-bottom: 1.5rem;">My Complaints</h2>
+            <div class="card">
+                <div id="complaint-list">
+                    <!-- Dynamically rendered citizen complaints -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Leaderboard -->
+        <div id="tab-board" class="tab-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2>🏆 <span data-i18n="cit_leaderboard">Civic Leaderboard</span></h2>
+                <div style="color: var(--accent); font-weight: 600;"><span data-i18n="rank">Rank</span>: #42</div>
+            </div>
+            <div class="card">
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Top citizens ranked by
+                    total issues reported & resolved.</p>
+                <div id="citizen-leaderboard" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                    <!-- Dynamically rendered leaderboard -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Profile & Feedback -->
+        <div id="tab-profile" class="tab-content">
+            <h2 data-i18n="nav_profile" style="margin-bottom: 1.5rem;">Profile & Settings</h2>
+
+            <div class="card" style="margin-bottom: 1.5rem; text-align: center;">
+                <img src="" id="tab-avatar"
+                    style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 1rem; border: 3px solid var(--primary);">
+                <h3 id="tab-name">User Name</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;" id="tab-contact">john@example.com</p>
+
+                <div
+                    style="text-align: left; background: #f9fafb; padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <h4
+                        style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                        Contact Details</h4>
+                    <p style="margin-bottom: 0.5rem;"><strong>Address:</strong> <span id="tab-address"
+                            style="color: var(--text-muted);">123 Main St</span></p>
+                    <p><strong>Pincode:</strong> <span id="tab-pincode" style="color: var(--text-muted);">625001</span>
+                    </p>
+                </div>
+
+                <div
+                    style="text-align: left; background: #f9fafb; padding: 1.5rem; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 1.5rem;">
+                    <h4 style="margin-bottom: 1rem;">Feedback / App Rating</h4>
+                    <textarea id="citizen-feedback-text" style="width: 100%; min-height: 80px; margin-bottom: 1rem;"
+                        placeholder="Write your feedback here..."></textarea>
+                    <button class="btn btn-primary" style="margin-top: 0;" onclick="submitFeedback()">Submit
+                        Feedback</button>
+                </div>
+
+                <button class="btn btn-primary"
+                    style="background: transparent; color: #ef4444; border: 1px solid #ef4444;" onclick="logout()"
+                    data-i18n="logout_btn">Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaint Form Screen -->
+    <div class="dashboard animate" id="complaint-form-screen">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+            <button onclick="showDashboard('citizen')"
+                style="background: none; border: 1px solid var(--border-color); color: var(--text-main); padding: 0.5rem; border-radius: 50%; cursor: pointer; width: 40px; height: 40px;">←</button>
+            <h2 id="form-title" style="margin-bottom: 0;">Report Issue</h2>
+        </div>
+
+        <div class="card complaint-form-card" style="max-width: 600px; margin: 0 auto;">
+            <div class="form-group">
+                <label data-i18n="upload_photo">Upload Photo (Live Camera)</label>
+                <div id="photo-placeholder" class="complaint-form-theme"
+                    style="width: 100%; height: 250px; background: #f9fafb; border: 2px dashed var(--border-color); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative;"
+                    onclick="startCamera()">
+                    <span style="font-size: 2rem;" id="camera-icon">📸</span>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;" id="camera-text" data-i18n="click_photo">
+                        Click to open camera</p>
+                    <video id="camera-stream" autoplay playsinline
+                        style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; z-index: 5;"></video>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 10px;">
+                    <button id="capture-btn" class="btn btn-primary"
+                        style="display: none; background: #e74c3c; margin: 0; flex: 1;" onclick="capturePhoto()"
+                        data-i18n="snap_photo">Snap Photo</button>
+                    <button id="retake-btn" class="btn btn-primary" style="display: none; margin: 0; flex: 1;"
+                        onclick="retakePhoto()" data-i18n="retake_photo">Retake</button>
+                    <button id="gallery-btn" class="btn"
+                        style="margin: 0; flex: 1; border: 1.5px solid var(--primary); color: var(--primary); background: transparent;"
+                        onclick="triggerGalleryUpload('citizen')">
+                        📁 <span data-i18n="upload_gallery">Upload from Gallery</span>
+                    </button>
+                    <input type="file" id="citizen-gallery-input" style="display: none;" accept="image/*"
+                        onchange="handleGalleryUpload(event, 'citizen')">
+                </div>
+
+                <canvas id="photo-canvas" style="display: none;"></canvas>
+                <img id="captured-photo"
+                    style="width: 100%; height: 250px; object-fit: cover; border-radius: 15px; display: none; margin-top: 10px; border: 2px solid var(--primary);">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="location">Location</label>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="location-bar" placeholder="Click icon to detect..." readonly>
+                    <button class="btn-primary" style="width: auto; padding: 0.5rem 1rem; border-radius: 10px;"
+                        onclick="getLocation()">📍</button>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div class="form-group">
+                    <label data-i18n="street_name">Street Name / Cross</label>
+                    <input type="text" id="loc-street" placeholder="e.g., 2nd Main Road">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="area_name">Area / Locality</label>
+                    <input type="text" id="loc-area" placeholder="e.g., Anna Nagar">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="landmark">Nearby Landmark</label>
+                <input type="text" id="loc-landmark" placeholder="e.g., Near Apollo Hospital">
+            </div>
+
+            <div class="form-group">
+                <label data-i18n="description">Description</label>
+                <textarea id="issue-description"
+                    style="width: 100%; padding: 1rem; background: #f9fafb; border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); min-height: 100px;"
+                    placeholder="Describe the problem details..."></textarea>
+            </div>
+
+            <button class="btn btn-primary" onclick="submitComplaint()" data-i18n="submit_problem">Submit
+                Problem</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Officer) -->
+    <div id="bottom-nav-officer-container" style="display: none;">
+        <nav class="bottom-nav">
+            <div class="nav-item active" onclick="switchOfficerTab('tab-off-feed', this)">
+                <i>📋</i>
+                <span class="nav-text" data-i18n="nav_feed">Feed</span>
+            </div>
+            <div class="nav-item" onclick="switchOfficerTab('tab-off-resolved', this)">
+                <i>✅</i>
+                <span class="nav-text" data-i18n="nav_resolved">Resolved</span>
+            </div>
+            <div class="nav-item" onclick="switchOfficerTab('tab-off-board', this)">
+                <i>🏆</i>
+                <span class="nav-text" data-i18n="nav_board">Leaderboard</span>
+            </div>
+            <div class="nav-item" onclick="switchOfficerTab('tab-off-feedback', this)">
+                <i>💬</i>
+                <span class="nav-text" data-i18n="nav_feedback">Feedback</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Officer Dashboard Container -->
+    <div class="dashboard animate" id="officer-dashboard" style="padding: 1rem; padding-bottom: 80px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 1.5rem;">
+            <h2 data-i18n="off_dash">Officer Hub</h2>
+            <button class="btn-primary"
+                style="padding: 0.5rem 1rem; border-radius: 8px; border: none; cursor: pointer; background: transparent; color: #ef4444; border: 1px solid #ef4444;"
+                onclick="logout()" data-i18n="logout_btn">Logout</button>
+        </div>
+
+        <!-- Tab 1: Feed (Active) -->
+        <div id="tab-off-feed" class="tab-off-content active">
+            <!-- Summary Stats (Home View) -->
+            <div class="grid" style="margin-bottom: 2rem;">
+                <div class="card" onclick="focusOfficerColumn('pending')"
+                    style="cursor: pointer; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div class="stat-number" id="home-stat-pending">0</div>
+                    <label data-i18n="off_pending" style="font-weight: 600;">Pending Complaints</label>
+                </div>
+                <div class="card" onclick="focusOfficerColumn('progress')"
+                    style="cursor: pointer; transition: transform 0.2s;"
+                    onmouseover="this.style.transform='translateY(-5px)'"
+                    onmouseout="this.style.transform='translateY(0)'">
+                    <div class="stat-number" id="home-stat-progress" style="color: orange;">0</div>
+                    <label data-i18n="off_progress" style="font-weight: 600;">In Progress</label>
+                </div>
+            </div>
+
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <h3 data-i18n="active_feed">Active Complaints Feed</h3>
+                <input type="text" id="officer-search" placeholder="Search ID or Keyword..." style="max-width: 300px;"
+                    oninput="applyOfficerFeedSearch()">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start;">
+                <!-- Column 1: Pending -->
+                <div class="card" style="padding: 1rem; background: rgba(0,0,0,0.02); min-height: 400px;"
+                    onclick="focusOfficerColumn('pending')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid var(--primary); padding-bottom: 0.5rem;"
+                        id="header-pending">
+                        <h4 style="margin:0; color: var(--primary);"><span class="stat-number" id="stat-pending"
+                                style="font-size: 1.5rem; margin-right: 0.5rem;">0</span> <span
+                                data-i18n="off_pending">Pending</span></h4>
+                    </div>
+                    <div id="column-pending" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Rendered Pending complaints -->
+                    </div>
+                </div>
+
+                <!-- Column 2: In Progress -->
+                <div class="card" style="padding: 1rem; background: rgba(0,0,0,0.02); min-height: 400px;"
+                    onclick="focusOfficerColumn('progress')">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 2px solid orange; padding-bottom: 0.5rem;"
+                        id="header-progress">
+                        <h4 style="margin:0; color: orange;"><span class="stat-number" id="stat-progress"
+                                style="font-size: 1.5rem; margin-right: 0.5rem; color: orange;">0</span> <span
+                                data-i18n="off_progress">In Progress</span></h4>
+                    </div>
+                    <div id="column-progress" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <!-- Rendered In Progress complaints -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 2: Resolved -->
+        <div id="tab-off-resolved" class="tab-off-content" style="display: none;">
+            <div class="card" style="margin-bottom: 2rem;">
+                <div class="stat-number" id="stat-resolved" style="color: var(--accent);">0</div>
+                <label data-i18n="off_resolved">Total Resolved Complaints</label>
+            </div>
+            <div class="card">
+                <h3>✅ Resolved Issues</h3>
+                <div id="officer-resolved-feed"
+                    style="margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                    <!-- Rendered resolved issues -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Leaderboard -->
+        <div id="tab-off-board" class="tab-off-content" style="display: none;">
+            <div class="card">
+                <h3>🏆 <span data-i18n="cit_leaderboard">Citizen Leaderboard</span></h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Global citizen rankings.
+                </p>
+                <div id="officer-leaderboard"
+                    style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Citizen Feedback -->
+        <div id="tab-off-feedback" class="tab-off-content" style="display: none;">
+            <div class="card">
+                <h3>💬 Public Feedback</h3>
+                <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">Reviews and feedback
+                    collected from the Citizen app.</p>
+                <div id="officer-feedback-list"
+                    style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
+                    <!-- Rendered feedback here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Zoom Modal -->
+    <div id="image-zoom-modal" class="zoom-modal" onclick="closeImageZoom()">
+        <span class="zoom-close">&times;</span>
+        <img id="zoomed-image" src="" alt="Zoomed View">
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="rating-modal" class="rating-modal">
+        <div class="rating-modal-content animate">
+            <h2 id="rating-title" style="margin-bottom: 1rem;">Rate the Service</h2>
+            <p id="rating-subtitle" style="color: var(--text-muted); margin-bottom: 1.5rem;">How was your experience
+                reporting this issue?</p>
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 2rem;" onclick="submitFinalRating()">Submit
+                Rating</button>
+            <button class="btn" style="color: var(--text-muted); font-size: 0.9rem;" onclick="closeRatingModal()">Skip
+                for now</button>
+        </div>
+    </div>
+
+    <!-- Officer Proof Capture Modal -->
+    <div id="officer-proof-modal" class="rating-modal">
+        <div class="rating-modal-content animate" style="max-width: 500px;">
+            <h2 style="margin-bottom: 1rem;">Capture Resolution Proof</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Take a photo of the completed work to mark as
+                finished.</p>
+            <div id="off-camera-placeholder"
+                style="width: 100%; height: 250px; background: #f9fafb; border: 2px dashed var(--border-color); border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; position: relative;"
+                onclick="startOfficerCamera()">
+                <span style="font-size: 2rem;">📸</span>
+                <p style="color: var(--text-muted); margin-top: 0.5rem;">Click to open camera</p>
+                <video id="off-camera-stream" autoplay playsinline
+                    style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; z-index: 5;"></video>
+                <img id="off-captured-proof"
+                    style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top:0; left:0; z-index: 10;">
+            </div>
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <button id="off-capture-btn" class="btn btn-primary"
+                    style="display: none; background: #e74c3c; margin: 0; flex: 1;" onclick="captureOfficerPhoto()">Snap
+                    Photo</button>
+                <button id="off-retake-btn" class="btn btn-primary" style="display: none; margin: 0; flex: 1;"
+                    onclick="retakeOfficerPhoto()">Retake</button>
+                <button id="off-gallery-btn" class="btn"
+                    style="margin: 0; flex: 1; border: 1.5px solid var(--primary); color: var(--primary); background: transparent;"
+                    onclick="triggerGalleryUpload('officer')">
+                    📁 <span data-i18n="upload_gallery">Upload from Gallery</span>
+                </button>
+                <input type="file" id="officer-gallery-input" style="display: none;" accept="image/*"
+                    onchange="handleGalleryUpload(event, 'officer')">
+            </div>
+            <button id="off-save-proof-btn" class="btn btn-primary" style="display: none;"
+                onclick="saveResolutionProof()">Save & Mark Finished</button>
+            <button class="btn" onclick="closeOfficerProofModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let currentCategory = '';
+        let userData = {};
+
+        // Simulating a Database
+        let globalComplaints = [];
+        let globalFeedback = [];
+        let globalUsers = [
+            { name: "Arun Kumar", rank: 1, complaints: 42 },
+            { name: "Priya M", rank: 2, complaints: 28 },
+            { name: "Karthik Raj", rank: 3, complaints: 15 }
+        ];
+
+
+        function switchTab(tabId, navElement) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+            // Show target
+            document.getElementById(tabId).classList.add('active');
+
+            // Update active state on nav item
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if (navElement) {
+                navElement.classList.add('active');
+            } else {
+                // If called without nav element (e.g., from submit), force first icon active
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+            }
+
+            // Re-render specific tab data if needed
+            if (tabId === 'tab-issues') renderCitizenComplaints();
+            if (tabId === 'tab-board') renderLeaderboard();
+        }
+
+
+        function switchOfficerTab(tabId, navElement) {
+            document.querySelectorAll('.tab-off-content').forEach(el => el.style.display = 'none');
+            document.getElementById(tabId).style.display = 'block';
+
+            document.querySelectorAll('#bottom-nav-officer-container .nav-item').forEach(el => el.classList.remove('active'));
+            if (navElement) {
+                navElement.classList.add('active');
+            } else {
+                document.querySelectorAll('#bottom-nav-officer-container .nav-item')[0].classList.add('active');
+            }
+
+            // Sync Render
+            if (tabId === 'tab-off-feed') renderOfficerDashboard('All');
+            if (tabId === 'tab-off-resolved') renderOfficerDashboard('Resolved', '', 'officer-resolved-feed');
+            if (tabId === 'tab-off-board') renderLeaderboard();
+            if (tabId === 'tab-off-feedback') renderOfficerFeedback();
+        }
+
+        function submitFeedback() {
+            const feedText = document.getElementById('citizen-feedback-text').value;
+            if (!feedText) return;
+            globalFeedback.unshift({
+                user: userData.name,
+                contact: userData.contact,
+                text: feedText,
+                time: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString()
+            });
+            document.getElementById('citizen-feedback-text').value = '';
+            alert(userData.lang === 'tamil' ? 'உங்கள் கருத்து சமர்ப்பிக்கப்பட்டது. நன்றி!' : 'Feedback Submitted! Thank you.');
+        }
+
+        function renderOfficerFeedback() {
+            const list = document.getElementById('officer-feedback-list');
+            list.innerHTML = '';
+            if (globalFeedback.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 2rem;">No feedback available yet.</p>';
+                return;
+            }
+
+            globalFeedback.forEach(fb => {
+                list.innerHTML += `
+                    <div style="background: #f9fafb; border: 1px solid var(--border-color); border-radius: 10px; padding: 1.5rem; position: relative;">
+                        <span style="font-size: 1.5rem; position: absolute; right: 20px; top: 20px; opacity: 0.2;">💬</span>
+                        <p style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 1rem; font-style: italic;">"${fb.text}"</p>
+                        <div style="border-top: 1px solid #e5e7eb; padding-top: 0.5rem; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-muted);">
+                            <span><strong>By:</strong> ${fb.user} (${fb.contact})</span>
+                            <span>${fb.time}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleProfileFields() {
+            const role = document.getElementById('prof-role').value;
+            if (role === 'citizen') {
+                document.getElementById('citizen-fields').style.display = 'block';
+                document.getElementById('officer-fields').style.display = 'none';
+            } else {
+                document.getElementById('citizen-fields').style.display = 'none';
+                document.getElementById('officer-fields').style.display = 'block';
+            }
+        }
+
+        function changeLanguagePreview() {
+            userData.lang = document.getElementById('prof-language').value;
+            applyLanguage();
+        }
+
+        function sendOTP() {
+            const contact = document.getElementById('off-contact').value;
+            if (contact.length !== 10) {
+                const msg = userData.lang === 'tamil' ? "தயவுசெய்து செல்லுபடியாகும் 10 இலக்க எண்ணை உள்ளிடவும்." : "Please enter a valid 10-digit number.";
+                alert(msg);
+                return;
+            }
+            const fullContact = "+91" + contact;
+            alert(`Simulation: OTP sent to ${fullContact}. (Use any 4 digits to verify)`);
+            document.getElementById('otp-section').style.display = 'block';
+        }
+
+        function verifyOTPAndLogin() {
+            const otp = document.getElementById('off-otp').value;
+            if (otp.length < 4) {
+                alert("Please enter a valid 4 digit OTP.");
+                return;
+            }
+            // Populate userData as Officer
+            userData.role = 'officer';
+            userData.lang = document.getElementById('prof-language').value;
+            userData.name = document.getElementById('off-name').value || 'Officer Name';
+            userData.contact = "+91" + (document.getElementById('off-contact').value || '9876543210');
+            userData.email = 'officer@maduraicorp.gov.in'; // Mock email
+            userData.employeeId = document.getElementById('off-empid').value || 'EMP-0000';
+            userData.ward = document.getElementById('off-ward').value || '42';
+            userData.complaints = 0;
+
+            completeLogin();
+        }
+
+        function saveProfile() {
+            // Populate userData as Citizen
+            userData.role = 'citizen';
+            userData.lang = document.getElementById('prof-language').value;
+            userData.name = document.getElementById('prof-name').value || 'John Doe';
+            userData.email = document.getElementById('prof-email').value || 'john@example.com';
+
+            const contact = document.getElementById('prof-contact').value;
+            if (contact.length !== 10) {
+                const msg = userData.lang === 'tamil' ? "தயவுசெய்து செல்லுபடியாகும் 10 இலக்க எண்ணை உள்ளிடவும்." : "Please enter a valid 10-digit number.";
+                alert(msg);
+                return;
+            }
+            userData.contact = "+91" + contact;
+
+            userData.address = document.getElementById('prof-address').value || 'Madurai City';
+            userData.pincode = document.getElementById('prof-pincode').value || '625001';
+            userData.complaints = 0; // tracking user complaints completely
+
+            // Add current user to global user list if they are citizen and not already added
+            if (!globalUsers.some(u => u.email === userData.email)) {
+                globalUsers.push(userData);
+            }
+
+            completeLogin();
+        }
+
+        function completeLogin() {
+            document.getElementById('profile-setup-screen').style.display = 'none';
+
+            // Setup User Avatar (Profile Logo) using initials with green theme
+            const userInfo = document.getElementById('user-info');
+            const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name)}&background=2ecc71&color=0a1f11&bold=true`;
+            userInfo.innerHTML = `<img src="${avatarUrl}" style="width: 45px; height: 45px; border-radius: 50%; cursor: pointer; border: 2px solid var(--primary); transition: transform 0.2s;" onclick="toggleProfileModal()" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">`;
+
+            // Populate Modal
+            document.getElementById('modal-avatar').src = avatarUrl;
+            document.getElementById('modal-name').innerText = userData.name;
+            const avgRating = calculateOfficerRating();
+            document.getElementById('modal-role').innerText = userData.role === 'citizen' ? 'Public User' : `Officer - ${userData.employeeId} (Ward ${userData.ward}) | ⭐ ${avgRating}/5`;
+            document.getElementById('modal-email').innerText = userData.email;
+            document.getElementById('modal-contact').innerText = userData.contact;
+
+            if (userData.role === 'citizen') {
+                document.getElementById('modal-address').innerText = userData.address; document.getElementById('tab-address').innerText = userData.address; document.getElementById('tab-pincode').innerText = userData.pincode; document.getElementById('tab-contact').innerText = userData.email + ' | ' + userData.contact; document.getElementById('tab-name').innerText = userData.name; document.getElementById('tab-avatar').src = document.getElementById('modal-avatar').src;
+                document.getElementById('modal-pincode').innerText = userData.pincode;
+                document.getElementById('modal-address').parentElement.style.display = 'flex';
+                document.getElementById('modal-pincode').parentElement.style.display = 'flex';
+            } else {
+                document.getElementById('modal-address').parentElement.style.display = 'none';
+                document.getElementById('modal-pincode').parentElement.style.display = 'none';
+            }
+
+            showDashboard(userData.role);
+        }
+
+        function toggleProfileModal() {
+            const modal = document.getElementById('profile-modal');
+            modal.style.display = modal.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function logout() {
+            document.getElementById('profile-modal').style.display = 'none';
+            document.getElementById('user-info').innerHTML = '';
+            document.getElementById('citizen-dashboard').style.display = 'none'; document.getElementById('bottom-nav-container').style.display = 'none';
+            document.getElementById('officer-dashboard').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'none';
+            document.getElementById('profile-setup-screen').style.display = 'block'; if (document.getElementById('bottom-nav-officer-container')) document.getElementById('bottom-nav-officer-container').style.display = 'none'; // Return to initial screen
+            userData = {};
+        }
+
+        function showDashboard(role) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('profile-setup-screen').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'none';
+
+            if (role === 'citizen') {
+                document.getElementById('citizen-dashboard').style.display = 'block'; document.getElementById('bottom-nav-container').style.display = 'block'; switchTab('tab-home');
+                document.getElementById('officer-dashboard').style.display = 'none';
+                renderCitizenComplaints();
+            } else {
+                document.getElementById('citizen-dashboard').style.display = 'none'; document.getElementById('bottom-nav-container').style.display = 'none';
+                document.getElementById('officer-dashboard').style.display = 'block'; document.getElementById('bottom-nav-officer-container').style.display = 'block'; switchOfficerTab('tab-off-feed');
+                renderOfficerDashboard();
+            }
+            renderLeaderboard();
+            applyLanguage();
+        }
+
+        // --- Translation Engine ---
+        const translations = {
+            en: {
+                login_as: "Login As", public_user: "Public User", corp_officer: "Corporation Officer",
+                full_name: "Full Name", email_id: "Email ID", contact_no: "Contact No", address: "Address", pincode: "Pincode",
+                login_btn: "Login & Continue", officer_name: "Officer Name", contact_otp: "Contact Number (For OTP)",
+                employee_id: "Employee ID",
+                ward: "Assigned Ward", send_otp: "Send OTP", enter_otp: "Enter OTP",
+                verify_login: "Verify & Login", cit_dash: "Citizen Dashboard", rank: "Social Rank",
+                raise_comp: "Raise a Complaint", select_cat: "Select a category to report an issue.",
+                cat_garbage: "Garbage", cat_drainage: "Drainage", cat_sanitation: "Sanitation", cat_others: "Others",
+                my_comp: "My Complaints", upload_photo: "Live Camera Capture", click_photo: "Click to open camera",
+                snap_photo: "Snap Photo", retake_photo: "Retake", location: "Location", description: "Description",
+                submit_problem: "Submit Problem", logout_btn: "Logout", off_dash: "Officer Management Hub",
+                off_pending: "Pending Complaints", off_progress: "In Progress", off_resolved: "Resolved",
+                cit_leaderboard: "Citizen Leaderboard", active_feed: "Active Complaints Feed", stat_all: "All Statuses",
+                feed_empty: "No active complaints in the system.", no_match: "No complaints match the current filters.",
+                action_accept: "Accept", action_decline: "Decline", action_fin: "Mark as Finished",
+                reporter: "Reporter", issues: "Issues", nav_home: "Home", nav_issues: "My Issues", nav_board: "Leaderboards", nav_profile: "Profile", nav_feed: "Feed", nav_resolved: "Resolved", nav_feedback: "Feedback",
+                street_name: "Street Name / Cross", area_name: "Area / Locality", landmark: "Nearby Landmark",
+                upload_gallery: "Upload from Gallery", or_text: "OR"
+            },
+            tamil: {
+                login_as: "உள்நுழைக", public_user: "பொது பயனர்", corp_officer: "மாநகராட்சி அதிகாரி",
+                full_name: "முழு பெயர்", email_id: "மின்னஞ்சல்", contact_no: "தொடர்பு எண்", address: "முகவரி", pincode: "அஞ்சல் குறியீடு",
+                login_btn: "தொடரவும்", officer_name: "அதிகாரி பெயர்", contact_otp: "தொலைபேசி எண் (OTP-க்கு)",
+                employee_id: "பணியாளர் எண்",
+                ward: "வார்டு", send_otp: "OTP அனுப்பு", enter_otp: "OTP உள்ளிடவும்",
+                verify_login: "சரிபார்த்து உள்நுழைக", cit_dash: "மக்கள் பக்கம்", rank: "சமூக நிலை",
+                raise_comp: "புகார் அளியுங்கள்", select_cat: "பிரிவை தேர்ந்தெடுக்கவும்.",
+                cat_garbage: "குப்பை", cat_drainage: "கழிவுநீர்", cat_sanitation: "சுகாதாரம்", cat_others: "மற்றவை",
+                my_comp: "எனது புகார்கள்", upload_photo: "நேரடி புகைப்படம் எடுத்தல்", click_photo: "கேமராவை திறக்க",
+                snap_photo: "படம் பிடி", retake_photo: "மீண்டும் எடு", location: "இடம்", description: "விவரம்",
+                submit_problem: "புகாரை பதிவு செய்", logout_btn: "வெளியேறு", off_dash: "அதிகாரி பக்கம்",
+                off_pending: "நிலுவையில் உள்ளவை", off_progress: "செயல்பாட்டில் உள்ளது", off_resolved: "தீர்க்கப்பட்டவை",
+                cit_leaderboard: "குடிமக்கள் தரவரிசை", active_feed: "செயல்பாட்டில் உள்ள புகார்கள்", stat_all: "அனைத்தும்",
+                feed_empty: "கணினியில் எந்த புகாரும் இல்லை.", no_match: "தற்போதைய தேடலுக்கு புகார்கள் இல்லை.",
+                action_accept: "ஏற்றுக்கொள்", action_decline: "நிராகரி", action_fin: "முடிக்கப்பட்டது",
+                reporter: "பதிவு செய்தவர்", issues: "புகார்கள்", nav_home: "முகப்பு", nav_issues: "என் புகார்கள்", nav_board: "தரவரிசை", nav_profile: "சுயவிவரம்", nav_feed: "புகார்கள்", nav_resolved: "தீர்க்கப்பட்டவை", nav_feedback: "கருத்துകൾ",
+                street_name: "தெரு / குறுக்கு", area_name: "பகுதி / இடம்", landmark: "அருகிலுள்ள அடையாளம்",
+                upload_gallery: "கேலரியில் இருந்து பதிவேற்றவும்", or_text: "அல்லது"
+            }
+        };
+
+        function applyLanguage() {
+            if (!userData.lang) return;
+            const dict = translations[userData.lang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (dict[key]) {
+                    el.innerText = dict[key];
+                }
+            });
+            // Also update input placeholders dynamically if needed
+            if (userData.lang === 'tamil') {
+                document.getElementById('issue-description').placeholder = "பிரச்சனையின் விவரங்களை விவரிக்கவும்...";
+                document.getElementById('location-bar').placeholder = "இடத்தை அறிய ஐகானை கிளிக் செய்க...";
+                document.getElementById('officer-search').placeholder = "புகார் எண் (ID) அல்லது வார்த்தை மூலம் தேடுக...";
+                document.getElementById('loc-street').placeholder = "எ.கா., 2வது பிரதான சாலை";
+                document.getElementById('loc-area').placeholder = "எ.கா., அண்ணா நகர்";
+                document.getElementById('loc-landmark').placeholder = "எ.கா., அப்பல்லோ மருத்துவமனை அருகில்";
+            } else {
+                document.getElementById('issue-description').placeholder = "Describe the problem details...";
+                document.getElementById('location-bar').placeholder = "Click icon to detect...";
+                document.getElementById('officer-search').placeholder = "Search by Complaint ID or Keyword...";
+                document.getElementById('loc-street').placeholder = "e.g., 2nd Main Road";
+                document.getElementById('loc-area').placeholder = "e.g., Anna Nagar";
+                document.getElementById('loc-landmark').placeholder = "e.g., Near Apollo Hospital";
+            }
+        }
+
+        // --- Camera Engine ---
+        let videoStream = null;
+
+        async function startCamera() {
+            const video = document.getElementById('camera-stream');
+            const icon = document.getElementById('camera-icon');
+            const text = document.getElementById('camera-text');
+            const capBtn = document.getElementById('capture-btn');
+
+            document.getElementById('photo-placeholder').onclick = null; // Disable re-click
+
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = videoStream;
+                video.style.display = 'block';
+                icon.style.display = 'none';
+                text.style.display = 'none';
+                capBtn.style.display = 'block';
+            } catch (err) {
+                alert("Camera access denied or unavailabe: " + err.message);
+                document.getElementById('photo-placeholder').onclick = startCamera; // Reset
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('camera-stream');
+            const canvas = document.getElementById('photo-canvas');
+            const img = document.getElementById('captured-photo');
+            const placeholder = document.getElementById('photo-placeholder');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            img.src = canvas.toDataURL('image/jpeg');
+
+            // Stop stream
+            videoStream.getTracks().forEach(track => track.stop());
+
+            placeholder.style.display = 'none';
+            img.style.display = 'block';
+            document.getElementById('capture-btn').style.display = 'none';
+            document.getElementById('retake-btn').style.display = 'block';
+        }
+
+        function retakePhoto() {
+            document.getElementById('captured-photo').style.display = 'none';
+            document.getElementById('photo-placeholder').style.display = 'flex';
+            document.getElementById('retake-btn').style.display = 'none';
+            startCamera();
+        }
+
+        // --- Gallery Upload Engine ---
+        function triggerGalleryUpload(role) {
+            if (role === 'citizen') {
+                document.getElementById('citizen-gallery-input').click();
+            } else {
+                document.getElementById('officer-gallery-input').click();
+            }
+        }
+
+        function handleGalleryUpload(event, role) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imgData = e.target.result;
+                if (role === 'citizen') {
+                    const img = document.getElementById('captured-photo');
+                    const placeholder = document.getElementById('photo-placeholder');
+
+                    // Stop camera if running
+                    if (videoStream) videoStream.getTracks().forEach(track => track.stop());
+
+                    img.src = imgData;
+                    placeholder.style.display = 'none';
+                    img.style.display = 'block';
+                    document.getElementById('capture-btn').style.display = 'none';
+                    document.getElementById('retake-btn').style.display = 'block';
+                } else {
+                    const img = document.getElementById('off-captured-proof');
+                    const video = document.getElementById('off-camera-stream');
+
+                    // Stop officer camera if running
+                    if (offVideoStream) offVideoStream.getTracks().forEach(track => track.stop());
+
+                    img.src = imgData;
+                    img.style.display = 'block';
+                    video.style.display = 'none';
+                    document.getElementById('off-capture-btn').style.display = 'none';
+                    document.getElementById('off-retake-btn').style.display = 'block';
+                    document.getElementById('off-save-proof-btn').style.display = 'block';
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function openImageZoom(url) {
+            const modal = document.getElementById('image-zoom-modal');
+            const img = document.getElementById('zoomed-image');
+            img.src = url;
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeImageZoom() {
+            const modal = document.getElementById('image-zoom-modal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        function openComplaintForm(category) {
+            currentCategory = category;
+
+            // Translate Category Name if Tamil
+            let displayCat = category;
+            if (userData.lang === 'tamil') {
+                if (category === "Garbage") displayCat = "குப்பை";
+                if (category === "Drainage") displayCat = "கழிவுநீர்";
+                if (category === "Sanitation") displayCat = "சுகாதாரம்";
+                if (category === "Others") displayCat = "மற்றவை";
+            }
+            const reportStr = userData.lang === 'tamil' ? 'புகார்' : 'Report';
+            document.getElementById('form-title').innerText = `${reportStr} ${displayCat}`;
+
+            document.getElementById('citizen-dashboard').style.display = 'none'; document.getElementById('bottom-nav-container').style.display = 'none';
+            document.getElementById('complaint-form-screen').style.display = 'block'; document.getElementById('bottom-nav-container').style.display = 'none';
+
+            // Reset form
+            document.getElementById('photo-placeholder').style.display = 'flex';
+            document.getElementById('photo-placeholder').onclick = startCamera;
+            document.getElementById('camera-stream').style.display = 'none';
+            document.getElementById('camera-icon').style.display = 'block';
+            document.getElementById('camera-text').style.display = 'block';
+            document.getElementById('capture-btn').style.display = 'none';
+            document.getElementById('retake-btn').style.display = 'none';
+            document.getElementById('captured-photo').style.display = 'none';
+            if (videoStream) videoStream.getTracks().forEach(track => track.stop()); // Ensure stopped
+
+            document.getElementById('location-bar').value = '';
+            document.getElementById('loc-street').value = '';
+            document.getElementById('loc-area').value = '';
+            document.getElementById('loc-landmark').value = '';
+            document.getElementById('issue-description').value = '';
+        }
+
+        function getLocation() {
+            const locInput = document.getElementById('location-bar');
+            const streetInput = document.getElementById('loc-street');
+            const areaInput = document.getElementById('loc-area');
+            const landmarkInput = document.getElementById('loc-landmark');
+
+            locInput.value = userData.lang === 'tamil' ? "GPS ஒருங்கிணைப்புகளைக் கண்டறிகிறது..." : "Detecting GPS coordinates...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude.toFixed(4);
+                        const lon = position.coords.longitude.toFixed(4);
+                        // In a real app we'd reverse geocode here. Simulating that string formatting:
+                        locInput.value = `📍 GPS Acquired: ${lat}, ${lon} (Accuracy: ${Math.floor(position.coords.accuracy)}m)`;
+
+                        // Simulate reverse geocoding filling the detailed fields
+                        streetInput.value = "Kamarajar Salai";
+                        areaInput.value = "Anna Nagar";
+                        landmarkInput.value = "Apollo Hospital";
+                    },
+                    (error) => {
+                        alert(userData.lang === 'tamil' ? "இட அனுமதிகள் தேவை. இயல்புநிலைக்கு மாறுகிறது." : "Requires location permissions. Falling back to default.");
+                        locInput.value = 'Madurai, Tamil Nadu (12.91° N, 78.12° E)';
+                        streetInput.value = "South Veli Street";
+                        areaInput.value = "Madurai Central";
+                        landmarkInput.value = "Meenakshi Temple";
+                    }
+                );
+            } else {
+                alert(userData.lang === 'tamil' ? "இந்த உலாவியால் புவி இருப்பிடம் ஆதரிக்கப்படவில்லை." : "Geolocation is not supported by this browser.");
+            }
+        }
+
+        function submitComplaint() {
+            const desc = document.getElementById('issue-description').value;
+            const loc = document.getElementById('location-bar').value;
+            const street = document.getElementById('loc-street').value;
+            const area = document.getElementById('loc-area').value;
+            const landmark = document.getElementById('loc-landmark').value;
+            const img = document.getElementById('captured-photo');
+
+            if (!desc || !loc || img.src === '' || img.style.display === 'none') {
+                const msg = userData.lang === 'tamil' ? "தயவுசெய்து அனைத்து கட்டாய புலங்களையும் நிரப்பவும் (புகைப்படம், இடம், விவரம்)." : "Please complete all mandatory fields (Photo, Location, Description).";
+                alert(msg);
+                return;
+            }
+
+            // Combine location details for display
+            let fullLocation = loc;
+            if (street || area || landmark) {
+                fullLocation += `\n📍 `;
+                const details = [];
+                if (street) details.push(street);
+                if (area) details.push(area);
+                if (landmark) details.push(`Near ${landmark}`);
+                fullLocation += details.join(', ');
+            }
+
+            const newComplaint = {
+                id: 'CM-' + Math.floor(1000 + Math.random() * 9000),
+                category: currentCategory,
+                status: 'Submitted',
+                desc: desc,
+                location: loc,
+                fullLocation: fullLocation,
+                street: street,
+                area: area,
+                landmark: landmark,
+                imgUrl: img.src,
+                time: new Date().toLocaleTimeString(),
+                date: new Date().toLocaleDateString(),
+                user: userData
+            };
+
+            globalComplaints.unshift(newComplaint); // Add exactly to top of global list
+            userData.complaints += 1; // Increment user score
+
+            // Re-sort global users to maintain rank
+            globalUsers.sort((a, b) => b.complaints - a.complaints);
+            globalUsers.forEach((u, index) => u.rank = index + 1);
+
+            const successMsg = userData.lang === 'tamil' ? "புகார் வெற்றிகரமாக பதிவு செய்யப்பட்டது!" : "Issue submitted successfully! Clean Madurai 2.0 team is on it.";
+            alert(successMsg);
+
+            // Clean up stream if lingering
+            if (videoStream) videoStream.getTracks().forEach(track => track.stop());
+
+            showDashboard('citizen');
+            openRatingStage('submission', newComplaint.id); // Show rating stage 1
+            switchTab('tab-issues', document.querySelectorAll('.nav-item')[1]); // go to issues after submit
+        }
+
+        function calculateOfficerRating() {
+            let total = 0;
+            let count = 0;
+            globalComplaints.forEach(c => {
+                if (c.submissionRating) { total += c.submissionRating; count++; }
+                if (c.resolutionRating) { total += c.resolutionRating; count++; }
+            });
+            return count === 0 ? "5.0" : (total / count).toFixed(1);
+        }
+
+        let pendingRatingId = null;
+        let pendingRatingStage = '';
+
+        function openRatingStage(stage, complaintId) {
+            pendingRatingId = complaintId;
+            pendingRatingStage = stage;
+            const modal = document.getElementById('rating-modal');
+            const title = document.getElementById('rating-title');
+            const subtitle = document.getElementById('rating-subtitle');
+
+            if (stage === 'submission') {
+                title.innerText = userData.lang === 'tamil' ? "பதிவை மதிப்பிடவும்" : "Rate Reporting Process";
+                subtitle.innerText = userData.lang === 'tamil' ? "புகாரைப் பதிவு செய்த அனுபவம் எப்படி இருந்தது?" : "How was your experience reporting this issue?";
+            } else {
+                title.innerText = userData.lang === 'tamil' ? "தீர்வை மதிப்பிடவும்" : "Rate the Resolution";
+                subtitle.innerText = userData.lang === 'tamil' ? "அதிகாரியின் பணி உங்களுக்கு திருப்திகரமாக இருந்ததா?" : "How satisfied are you with the officer's work?";
+            }
+
+            // Reset stars
+            document.querySelectorAll('.star-rating input').forEach(input => input.checked = false);
+            modal.style.display = 'flex';
+        }
+
+        function closeRatingModal() {
+            document.getElementById('rating-modal').style.display = 'none';
+        }
+
+        function submitFinalRating() {
+            const selectedStar = document.querySelector('.star-rating input:checked');
+            if (!selectedStar) {
+                alert(userData.lang === 'tamil' ? "தயவுசெய்து ஒரு மதிப்பீட்டைத் தேர்ந்தெடுக்கவும்." : "Please select a rating.");
+                return;
+            }
+            const ratingValue = parseInt(selectedStar.value);
+            const complaint = globalComplaints.find(c => c.id === pendingRatingId);
+
+            if (complaint) {
+                if (pendingRatingStage === 'submission') {
+                    complaint.submissionRating = ratingValue;
+                } else {
+                    complaint.resolutionRating = ratingValue;
+                }
+
+                // Track officer performance if possible
+                // In this mock, we don't have a persistent officer DB, but let's simulate it
+                alert(userData.lang === 'tamil' ? "மதிப்பீட்டிற்கு நன்றி!" : "Thank you for the rating!");
+            }
+
+            closeRatingModal();
+            renderCitizenComplaints();
+        }
+
+        // --- Officer Resolution proof ---
+        let currentResolvingId = null;
+        let offVideoStream = null;
+
+        function openResolutionCamera(id) {
+            currentResolvingId = id;
+            document.getElementById('officer-proof-modal').style.display = 'flex';
+        }
+
+        function closeOfficerProofModal() {
+            if (offVideoStream) offVideoStream.getTracks().forEach(track => track.stop());
+            document.getElementById('officer-proof-modal').style.display = 'none';
+        }
+
+        async function startOfficerCamera() {
+            const video = document.getElementById('off-camera-stream');
+            const capBtn = document.getElementById('off-capture-btn');
+
+            try {
+                offVideoStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                video.srcObject = offVideoStream;
+                video.style.display = 'block';
+                capBtn.style.display = 'block';
+                document.getElementById('off-camera-placeholder').onclick = null;
+            } catch (err) {
+                alert("Camera access error: " + err.message);
+            }
+        }
+
+        function captureOfficerPhoto() {
+            const video = document.getElementById('off-camera-stream');
+            const img = document.getElementById('off-captured-proof');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            img.src = canvas.toDataURL('image/jpeg');
+            img.style.display = 'block';
+            video.style.display = 'none';
+            document.getElementById('off-capture-btn').style.display = 'none';
+            document.getElementById('off-retake-btn').style.display = 'block';
+            document.getElementById('off-save-proof-btn').style.display = 'block';
+
+            if (offVideoStream) offVideoStream.getTracks().forEach(track => track.stop());
+        }
+
+        function retakeOfficerPhoto() {
+            document.getElementById('off-captured-proof').style.display = 'none';
+            document.getElementById('off-retake-btn').style.display = 'none';
+            document.getElementById('off-save-proof-btn').style.display = 'none';
+            startOfficerCamera();
+        }
+
+        function saveResolutionProof() {
+            const proofUrl = document.getElementById('off-captured-proof').src;
+            const complaint = globalComplaints.find(c => c.id === currentResolvingId);
+            if (complaint) {
+                complaint.resolutionImg = proofUrl;
+                updateComplaintStatus(currentResolvingId, 'Resolved');
+            }
+            closeOfficerProofModal();
+        }
+
+        // --- Render Logic ---
+
+        function getStatusColor(status) {
+            if (status === 'Submitted') return '#2ecc71'; // primary leaf green
+            if (status === 'In Progress') return 'orange';
+            if (status === 'Resolved') return '#27ae60'; // accent deep green
+            return 'white';
+        }
+
+        function renderLeaderboard() {
+            let html = '';
+            globalUsers.forEach((u, index) => {
+                let medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🎖️';
+                html += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: #f9fafb; border-radius: 8px;">
+                        <div>
+                            <span style="font-size: 1.2rem; margin-right: 0.5rem;">${medal}</span>
+                            <strong>${u.name}</strong>
+                        </div>
+                        <div style="color: var(--primary); font-weight: bold;">
+                            ${u.complaints} <span data-i18n="issues">${userData.lang === 'tamil' ? translations.tamil.issues : translations.en.issues}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const citBoard = document.getElementById('citizen-leaderboard');
+            if (citBoard) citBoard.innerHTML = html;
+
+            const offBoard = document.getElementById('officer-leaderboard');
+            if (offBoard) offBoard.innerHTML = html;
+        }
+
+        function renderCitizenComplaints() {
+            const list = document.getElementById('complaint-list');
+            list.innerHTML = '';
+
+            if (globalComplaints.length === 0) {
+                list.innerHTML = '<p style="color: var(--text-muted);">No complaints raised yet.</p>';
+                return;
+            }
+
+            globalComplaints.forEach(c => {
+                const i18nStat = userData.lang === 'tamil' ? translations.tamil : translations.en;
+                let displayStatus = c.status;
+                if (c.status === 'Submitted') displayStatus = i18nStat.off_pending;
+                if (c.status === 'In Progress') displayStatus = i18nStat.off_progress;
+                if (c.status === 'Resolved') displayStatus = i18nStat.off_resolved;
+
+                let displayCat = c.category;
+                if (userData.lang === 'tamil') {
+                    if (c.category === "Garbage") displayCat = translations.tamil.cat_garbage;
+                    if (c.category === "Drainage") displayCat = translations.tamil.cat_drainage;
+                    if (c.category === "Sanitation") displayCat = translations.tamil.cat_sanitation;
+                    if (c.category === "Others") displayCat = translations.tamil.cat_others;
+                }
+
+                list.innerHTML += `
+                    <div style="padding: 1rem; background: #f9fafb; border-radius: 10px; margin-bottom: 1rem; border-left: 4px solid ${getStatusColor(c.status)};">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <strong>${displayCat} <span style="font-size: 1em; color: var(--accent); font-family: monospace; background: #e5e7eb; color: var(--text-main); padding: 2px 6px; border-radius: 4px;">(${c.id})</span></strong>
+                            <span style="color: ${getStatusColor(c.status)}; font-weight: bold; display: flex; align-items: center; gap: 0.5rem;">
+                                ${c.status === 'Submitted' ? '📤' : c.status === 'In Progress' ? '⏳' : '✅'} ${displayStatus}
+                            </span>
+                        </div>
+                        <small style="color: var(--text-muted);">
+                            <span style="font-weight: 600;">📅 ${c.date} | 🕒 ${c.time}</span><br>
+                            📍 <span style="font-weight: 500;">${c.fullLocation ? c.fullLocation.replace('\n', '<br>') : c.location.split(',')[0]}</span>
+                            <span style="display: block; margin-top: 0.5rem; font-style: italic;">"${c.desc}"</span>
+                        </small>
+                        
+                        ${c.status === 'Resolved' && c.resolutionImg ? `
+                            <div style="margin-top: 1rem; border-top: 1px solid #ddd; padding-top: 1rem;">
+                                <p style="font-weight: 600; font-size: 0.85rem; margin-bottom: 0.5rem;">Resolution Photo / தீர்வின் புகைப்படம்:</p>
+                                <img src="${c.resolutionImg}" style="width: 100%; max-height: 200px; object-fit: cover; border-radius: 8px; cursor: zoom-in;" onclick="openImageZoom('${c.resolutionImg}')">
+                                ${!c.resolutionRating ? `
+                                    <button class="btn btn-primary" style="margin-top: 1rem; width: auto; padding: 0.5rem 1rem;" onclick="openRatingStage('resolution', '${c.id}')">Rate this work / மதிப்பிடவும்</button>
+                                ` : `
+                                    <p style="margin-top: 0.5rem; color: #f39c12; font-weight: bold;">Your Rating: ${'★'.repeat(c.resolutionRating)}${'☆'.repeat(5 - c.resolutionRating)}</p>
+                                `}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+        }
+
+        function filterOfficerFeed(status, query) {
+            document.getElementById('officer-status-filter').value = status;
+            document.getElementById('officer-search').value = query;
+            applyOfficerFilters();
+        }
+
+        function applyOfficerFeedSearch() {
+
+            const searchQuery = document.getElementById('officer-search').value.toLowerCase();
+            renderOfficerDashboard('All', searchQuery);
+
+        }
+
+        function renderOfficerDashboard(statusFilter = 'All', searchQuery = '', targetId = 'officer-feed') {
+            const avgRating = calculateOfficerRating();
+            document.getElementById('modal-role').innerText = `Officer - ${userData.employeeId} (Ward ${userData.ward}) | ⭐ ${avgRating}/5`;
+
+            // Update Global Stats
+            const pendingList = globalComplaints.filter(c => c.status === 'Submitted');
+            const progressList = globalComplaints.filter(c => c.status === 'In Progress');
+            const resolvedList = globalComplaints.filter(c => c.status === 'Resolved');
+
+            document.getElementById('stat-pending').innerText = pendingList.length;
+            document.getElementById('stat-progress').innerText = progressList.length;
+            document.getElementById('stat-resolved').innerText = resolvedList.length;
+
+            // Update Home View Stats
+            if (document.getElementById('home-stat-pending')) document.getElementById('home-stat-pending').innerText = pendingList.length;
+            if (document.getElementById('home-stat-progress')) document.getElementById('home-stat-progress').innerText = progressList.length;
+
+            // Rendering Logic
+            if (targetId === 'officer-resolved-feed') {
+                const feed = document.getElementById(targetId);
+                feed.innerHTML = '';
+                const filtered = resolvedList.filter(c => !searchQuery || c.id.toLowerCase().includes(searchQuery) || c.desc.toLowerCase().includes(searchQuery));
+
+                if (filtered.length === 0) {
+                    feed.innerHTML = `<p style="color: var(--text-muted); text-align: center; padding: 2rem;">${userData.lang === 'tamil' ? translations.tamil.no_match : translations.en.no_match}</p>`;
+                    return;
+                }
+                filtered.forEach(c => renderComplaintCard(c, feed));
+            } else {
+                // Active Feed Columns
+                const pendingFeed = document.getElementById('column-pending');
+                const progressFeed = document.getElementById('column-progress');
+
+                if (pendingFeed) pendingFeed.innerHTML = '';
+                if (progressFeed) progressFeed.innerHTML = '';
+
+                let filtered = globalComplaints.filter(c => !searchQuery || c.id.toLowerCase().includes(searchQuery) || c.desc.toLowerCase().includes(searchQuery));
+
+                const pendingFiltered = filtered.filter(c => c.status === 'Submitted');
+                const progressFiltered = filtered.filter(c => c.status === 'In Progress');
+
+                if (pendingFiltered.length === 0 && pendingFeed) {
+                    pendingFeed.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8rem; text-align: center;">${userData.lang === 'tamil' ? 'புகார்கள் இல்லை' : 'No pending tasks'}</p>`;
+                } else {
+                    pendingFiltered.forEach(c => renderComplaintCard(c, pendingFeed));
+                }
+
+                if (progressFiltered.length === 0 && progressFeed) {
+                    progressFeed.innerHTML = `<p style="color: var(--text-muted); font-size: 0.8rem; text-align: center;">${userData.lang === 'tamil' ? 'செயல்பாட்டில் எதுவும் இல்லை' : 'Nothing in progress'}</p>`;
+                } else {
+                    progressFiltered.forEach(c => renderComplaintCard(c, progressFeed, true)); // small mode
+                }
+            }
+        }
+
+        function renderComplaintCard(c, targetContainer, smallMode = false) {
+            const i18nStat = userData.lang === 'tamil' ? translations.tamil : translations.en;
+            let actionButton = '';
+
+            if (c.status === 'Submitted') {
+                actionButton = `
+                    <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                        <button style="background: var(--primary); color: #000; border: none; padding: 0.6rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; font-weight: bold; flex: 2;" onclick="updateComplaintStatus('${c.id}', 'In Progress')">${i18nStat.action_accept}</button>
+                        <button style="background: transparent; color: #ff4d4d; border: 1px solid #ff4d4d; padding: 0.6rem; border-radius: 8px; cursor: pointer; font-size: 0.85rem; flex: 1;" onclick="updateComplaintStatus('${c.id}', 'Declined')">${i18nStat.action_decline}</button>
+                    </div>
+                `;
+            } else if (c.status === 'In Progress') {
+                actionButton = `
+                    <button style="background: var(--accent); color: #000; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top:1rem; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem;" onclick="openResolutionCamera('${c.id}')">
+                        📸 ${userData.lang === 'tamil' ? 'தீர்வு பதிவேற்றவும்' : 'Upload Proof'}
+                    </button>
+                `;
+            }
+
+            let displayCat = c.category;
+            if (userData.lang === 'tamil') {
+                if (c.category === "Garbage") displayCat = translations.tamil.cat_garbage;
+                if (c.category === "Drainage") displayCat = translations.tamil.cat_drainage;
+                if (c.category === "Sanitation") displayCat = translations.tamil.cat_sanitation;
+                if (c.category === "Others") displayCat = translations.tamil.cat_others;
+            }
+
+            targetContainer.innerHTML += `
+                <div class="animate" style="padding: 1.2rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 15px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); transition: all 0.3s; position: relative;">
+                    <div style="display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 0.8rem;">
+                         <div style="position: relative; cursor: zoom-in;" onclick="openImageZoom('${c.imgUrl}')">
+                            <img src="${c.imgUrl}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border-color);">
+                            <div style="position: absolute; bottom: 2px; right: 2px; background: rgba(0,0,0,0.5); color: white; padding: 2px; border-radius: 4px; font-size: 8px;">🔍</div>
+                         </div>
+                         <div style="flex:1;">
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                                <h5 style="margin:0; color: var(--text-main); font-size: 1rem; font-weight: 700;">${displayCat}</h5>
+                                <span style="font-size: 0.7rem; color: var(--text-muted);">${c.time}</span>
+                            </div>
+                            <small style="color: var(--accent); font-family: monospace; font-weight: 800; font-size: 0.85rem; display: block; margin-top: 2px;">ID: ${c.id}</small>
+                            <div style="display: flex; align-items: center; gap: 4px; margin-top: 4px;">
+                                <span style="font-size: 0.75rem; color: var(--text-muted);">👤 ${c.user.name}</span>
+                            </div>
+                         </div>
+                    </div>
+                    
+                    <p style="font-size: 0.85rem; color: var(--text-main); margin: 0.8rem 0; line-height: 1.5; font-style: italic; background: #f8fafc; padding: 0.8rem; border-radius: 8px; border-left: 3px solid var(--primary);">"${c.desc}"</p>
+                    
+                    <div style="font-size: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 5px;">
+                        <span>📍</span>
+                        <span style="font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${c.area || 'Madurai Central'}</span>
+                    </div>
+                    
+                    ${actionButton}
+                </div>
+            `;
+        }
+
+        function focusOfficerColumn(type) {
+            const pendingCol = document.getElementById('column-pending').parentElement;
+            const progressCol = document.getElementById('column-progress').parentElement;
+
+            if (type === 'pending') {
+                pendingCol.style.boxShadow = '0 0 0 3px var(--primary)';
+                progressCol.style.boxShadow = 'none';
+                pendingCol.style.opacity = '1';
+                progressCol.style.opacity = '0.6';
+                pendingCol.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                progressCol.style.boxShadow = '0 0 0 3px orange';
+                pendingCol.style.boxShadow = 'none';
+                progressCol.style.opacity = '1';
+                pendingCol.style.opacity = '0.6';
+                progressCol.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // Reset after 2 seconds or keep? Let's keep for focus.
+        }
+
+        function updateComplaintStatus(id, newStatus) {
+            const complaint = globalComplaints.find(c => c.id === id);
+            if (complaint) {
+                complaint.status = newStatus;
+                if (newStatus === 'Declined') {
+                    alert("Complaint declined.");
+                    globalComplaints = globalComplaints.filter(c => c.id !== id);
+                }
+
+                // Visual feedback
+                if (newStatus === 'In Progress') {
+                    focusOfficerColumn('progress');
+                }
+
+                if (document.getElementById('tab-off-resolved').style.display === 'block') {
+                    renderOfficerDashboard('Resolved', '', 'officer-resolved-feed');
+                } else {
+                    renderOfficerDashboard();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
